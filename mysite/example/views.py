@@ -25,13 +25,13 @@ def example_post(request):
 	if request.method == "POST":
 		try:
 			data = request.POST["data"]
-			data = json.loads(data)
-
+			jsob = json.loads(data)
+			print (jsob)
 			index = 0 
-			for i in len(data['demo']):
+			for i in jsob['demo']:
 				index += 1 
 
-			return JsonResponse({"count":log})
+			return JsonResponse({"count":index})
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
 			other = sys.exc_info()[0].__name__
