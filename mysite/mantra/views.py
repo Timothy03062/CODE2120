@@ -20,34 +20,6 @@ def example_get(request, var_a, var_b):
 		return JsonResponse({"isError": True, "error":str(e), "errorType":errorType, "function":fname, "line":exc_tb.tb_lineno, "log":log})
 
 @csrf_exempt
-def getLength(request):
-	jsob = {"side1": (), "side2": ()} #details
-	log = []
-	if request.method == "POST":
-		try:
-			data = request.POST["data"]
-			received = json.loads(data)
-			jsob.update(received)
-			#custom function 
-			integer = 0
-			side1 = int(jsob["side1"])
-			side2 = int(jsob["side2"])
-
-			side3 = sqrt(side1 * side1 + side2 * side2)
-
-	
-
-			return JsonResponse({"getLength":integer})
-		except Exception as e:
-			exc_type, exc_obj, exc_tb = sys.exc_info()
-			other = sys.exc_info()[0].__name__
-			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-			errorType = str(exc_type)
-			return JsonResponse({"isError": True, "error":str(e), "errorType":errorType, "function":fname, "line":exc_tb.tb_lineno, "log":log})
-	else:
-		return JsonResponse(jsob)
-		
-@csrf_exempt
 def fib(request):
 	jsob = {"startNumber": 0, "length": 10} #details
 	log = []
