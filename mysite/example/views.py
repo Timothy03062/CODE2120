@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import json
 from .models import *
+from math import exp 
 import os, sys
 
 # Create your views here.
@@ -81,8 +82,8 @@ def fib(request):
 		return JsonResponse(jsob)
 
 @csrf_exempt
-def getLength(request):
-	jsob = {"side1": (), "side2": ()} #details
+def growth(request):
+	jsob = {"startNumber": 0, "length": 10} #details
 	log = []
 	if request.method == "POST":
 		try:
@@ -90,15 +91,58 @@ def getLength(request):
 			received = json.loads(data)
 			jsob.update(received)
 			#custom function 
-			integer = 0
-			side1 = int(jsob["side1"])
-			side2 = int(jsob["side2"])
+			startNumber = int(jsob["startNumber"])
+			length = int(jsob["length"])
+			loop = range(length)
 
-			side3 = sqrt(side1 * side1 + side2 * side2)
+			numarray = []
 
-	
+			expno = startNumber
+			grow= exp(startNumber)
 
-			return JsonResponse({"getLength":integer})
+
+			for l in loop:
+				numarray.append(expno)
+				expno = expno + grow
+
+
+
+			return JsonResponse({"growth":numarray})
+		except Exception as e:
+			exc_type, exc_obj, exc_tb = sys.exc_info()
+			other = sys.exc_info()[0].__name__
+			fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+			errorType = str(exc_type)
+			return JsonResponse({"isError": True, "error":str(e), "errorType":errorType, "function":fname, "line":exc_tb.tb_lineno, "log":log})
+	else:
+		return JsonResponse(jsob)
+@csrf_exempt
+def grow(request):
+	jsob = {"startNumber": 0, "length": 10, "growthFactor": 1.5, "time": 4} #details
+	log = []
+	if request.method == "POST":
+		try:
+			data = request.POST["data"]
+			received = json.loads(data)
+			jsob.update(received)
+			#custom function 
+			startNumber = int(jsob["startNumber"])
+			length = int(jsob["length"])
+			growthFactor = float(jsob["growthFactor"])
+			time = int(jsob["time"])
+			loop = range(length)
+
+			numarray = []
+
+			a = startNumber
+			b = growthFactor
+			x = time 
+
+			for l in loop:
+				numarray.append(a)
+				a = a * b ** x 
+
+			return JsonResponse({"grow":numarray})
 		except Exception as e:
 			exc_type, exc_obj, exc_tb = sys.exc_info()
 			other = sys.exc_info()[0].__name__
